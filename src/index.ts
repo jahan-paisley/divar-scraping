@@ -1,4 +1,4 @@
-const { insertRecord, Listing } = require('./buildSchema');
+const {insertRecord, Listing} = require('./buildSchema');
 
 console.clear();
 console.log("loaded");
@@ -84,32 +84,51 @@ let callback = function () {
                     '.kt-unexpandable-row');
                 listing.ext_id = window.location.href
                 elems.forEach(o => {
-                    if (o.textContent!!.indexOf('متراژ زمین'))
-                        listing.area = parseInt(o.textContent!!
+                    if (o.textContent!!.indexOf('متراژ زمین') != -1)
+                        listing.land_area = parseInt(o.textContent!!
                             .replace('متراژ زمین', '')
                             .replace(',', '')
-                            .replace('متر', ''));
-                    else if (o.textContent!!.indexOf('قیمت کل'))
+                            .replace('متر', '')
+                            .replace(new RegExp(/[۰-۹]/g), d => '۰۱۲۳۴۵۶۷۸۹'.indexOf(d).toString())
+                        );
+                    else if (o.textContent!!.indexOf('قیمت کل') != -1)
                         listing.price = parseInt(o.textContent!!
                             .replace('قیمت کل', '')
                             .replace(',', '')
-                            .replace('تومان', ''));
-                    else if (o.textContent!!.indexOf('قیمت هر متر'))
+                            .replace('تومان', '')
+                            .replace(new RegExp(/[۰-۹]/g), d => '۰۱۲۳۴۵۶۷۸۹'.indexOf(d).toString())
+                        );
+                    else if (o.textContent!!.indexOf('قیمت هر متر') != -1)
                         listing.price_meter = parseInt(o.textContent!!
                             .replace('قیمت هر متر', '')
                             .replace(',', '')
-                            .replace('تومان', ''));
-                    else if (o.textContent!!.indexOf('آگهی‌دهنده'))
+                            .replace('تومان', '')
+                            .replace(new RegExp(/[۰-۹]/g), d => '۰۱۲۳۴۵۶۷۸۹'.indexOf(d).toString())
+                        );
+                    else if (o.textContent!!.indexOf('متراژ') != -1)
+                        listing.area = parseInt(o.textContent!!
+                            .replace('متراژ', '')
+                            .replace(',', '')
+                            .replace(new RegExp(/[۰-۹]/g), d => '۰۱۲۳۴۵۶۷۸۹'.indexOf(d).toString())
+                        );
+                    else if (o.textContent!!.indexOf('ساخت') != -1)
+                        listing.built = parseInt(o.textContent!!
+                            .replace('ساخت', '')
+                            .replace(',', '')
+                            .replace(new RegExp(/[۰-۹]/g), d => '۰۱۲۳۴۵۶۷۸۹'.indexOf(d).toString())
+                        );
+                    else if (o.textContent!!.indexOf('اتاق') != -1)
+                        listing.rooms = parseInt(o.textContent!!
+                            .replace('اتاق', '')
+                            .replace(',', '')
+                            .replace(new RegExp(/[۰-۹]/g), d => '۰۱۲۳۴۵۶۷۸۹'.indexOf(d).toString())
+                        );
+                    else if (o.textContent!!.indexOf('آگهی‌دهنده') != -1)
                         listing.advertiser = o.textContent!!
                             .replace('آگهی‌دهنده', '');
                     else
                         console.log("not saved" + o.textContent!!)
                 });
-                /*
-                                let record = new Listing(listing.ext_id!!, listing.title!!, listing.desc!!,
-                                    listing.advertiser!!, listing.area!!, listing.price!!, listing.price_meter!!, listing.district!!, listing.mobile!!, new Date(), 0
-                                );
-                */
                 console.log(listing)
                 insertRecord(listing);
             }
