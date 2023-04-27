@@ -48,43 +48,23 @@ function equals(a: typeof Listing, b: typeof Listing): boolean {
 const callback = function () {
     const contactBtn: HTMLElement | null = document.querySelector("#app > div.kt-container > div button");
     let searchEl = document.querySelector('div.kt-nav-text-field__field > form > input') as HTMLInputElement;
-    if (searchEl!!.value!! != 'کردان')
-        return;
+    // if (searchEl!!.value!! != 'کردان')
+    //     return;
     document.querySelectorAll('article[class^=kt-post-card]').forEach(elem => {
             let content = elem.textContent;
-            if (content!!.indexOf('سهیلیه') != -1 ||
-                content!!.indexOf('سهلیه') != -1 ||
-                content!!.indexOf('سهیله') != -1 ||
-                content!!.indexOf('چهارباغ') != -1 ||
-                content!!.indexOf('چهار باغ') != -1 ||
-                content!!.indexOf('هشتگرد') != -1 ||
-                content!!.indexOf('زعفرانیه') != -1 ||
-                content!!.indexOf('سرخاب') != -1 ||
-                content!!.indexOf('افشاریه') != -1 ||
-                content!!.indexOf('لشکرآباد') != -1 ||
-                content!!.indexOf('لشکراباد') != -1 ||
-                content!!.indexOf('لشگراباد') != -1 ||
-                content!!.indexOf('لشگرآباد') != -1 ||
-                content!!.indexOf('فشند') != -1 ||
-                content!!.indexOf('اقدسیه') != -1 ||
-                content!!.indexOf('طاووسیه') != -1 ||
-                content!!.indexOf('کردان جنوب') != -1 ||
-                content!!.indexOf('جنوب کردان') != -1 ||
-                content!!.indexOf('کردان جنوبی') != -1 ||
-                content!!.indexOf('رامجین') != -1 ||
-                content!!.indexOf('تهران دشت') != -1 ||
-                content!!.indexOf('تهراندشت') != -1 ||
-                content!!.indexOf(' زکی آباد') != -1 ||
-                content!!.indexOf(' زکی‌آباد') != -1 ||
-                content!!.indexOf('تهران‌دشت') != -1 ||
-                content!!.indexOf('سعید آباد') != -1 ||
-                content!!.indexOf('سعیدآباد') != -1 ||
-                content!!.indexOf('تنکمان') != -1 ||
-                content!!.indexOf('سنقرآباد') != -1 ||
-                content!!.indexOf('سنقراباد') != -1 ||
-                content!!.indexOf('سنقر اباد') != -1 ||
-                content!!.indexOf('سنقر آباد') != -1
-            ) elem.remove();
+            const excludedDistricts = ['سهیلیه', 'سهلیه', 'سهیله',
+                'چهارباغ', 'چهار باغ',
+                'هشتگرد', 'زعفرانیه', 'سرخاب', 'افشاریه', 'رامجین', 'تنکمان',
+                'لشکرآباد', 'لشکراباد', 'لشگراباد', 'لشگرآباد',
+                'فشند', 'اقدسیه', 'طاووسیه',
+                'کردان جنوب', 'جنوب کردان', 'کردان جنوبی',
+                'تهران دشت', 'تهراندشت', 'تهران‌دشت',
+                'زکی آباد', 'زکی‌آباد',
+                'سعید آباد', 'سعیدآباد', 'سعیداباد',
+                'سنقرآباد', 'سنقراباد', 'سنقر اباد', 'سنقر آباد'
+            ]
+            if (excludedDistricts.filter(o => content!!.indexOf(o) !== -1).length > 0)
+                elem.remove();
         }
     )
 
@@ -121,17 +101,21 @@ const callback = function () {
                 listing.mobile = parseInt(mobileVal)
                 console.log(listing)
                 // insertRecord(listing);
-                if (JSON.stringify(listing).indexOf('کردان') !== -1) {
+                const contents = JSON.stringify(listing);
+                const cities = ['کردان', 'کوهسار', 'طالیان', 'تالیان', 'ورده',
+                    'اغشت', 'خوروین', 'علاقبند', 'علاقه بند', 'ولیان', 'هرجاب']
+                if (cities.filter(city => contents.indexOf(city) !== -1).length > 0) {
                     const result = await query_es(listing);
                     if (result.length === 0) {
                         console.log('inserting into ES');
                         insert_es(listing);
                         alert('inserted new record');
                     } else if (result.filter(o => equals(listing, o._source)).length == 0) {
+                        const previousPrices = result.map(o => o._source.price).join(', ');
                         listing.revision = true;
                         console.log('inserting the next revision into ES')
                         insert_es(listing);
-                        alert('inserted revised record');
+                        alert(`inserted revised record\n PreviousPrices: ${previousPrices}`);
                     } else {
                         alert('did nothing');
                     }
@@ -162,7 +146,7 @@ function extract_listing() {
     const elems: NodeListOf<Element> = document.querySelectorAll('.kt-group-row-item--info-row, ' +
         '.kt-unexpandable-row');
     let url = window.location.href;
-    listing.ext_id = url.substring(url.lastIndexOf('/') + 1, url.length)
+    listing.ext_id = url.substring(url.lastIndexOf('/') + 1, url.indexOf('?') == -1 ? url.length : url.indexOf('?'))
     const locElem = document.querySelector('a[class^=map]');
     if (locElem) {
         const href = locElem.attributes.getNamedItem('href')!!.value;
