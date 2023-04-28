@@ -102,8 +102,8 @@ const callback = function () {
                 console.log(listing)
                 // insertRecord(listing);
                 const contents = JSON.stringify(listing);
-                const cities = ['کردان', 'کوهسار', 'طالیان', 'تالیان', 'ورده',
-                    'اغشت', 'خوروین', 'علاقبند', 'علاقه بند', 'ولیان', 'هرجاب']
+                const cities = ['کردان', 'کوهسار', 'طالیان', 'تالیان', 'ورده', 'خور',
+                    'اغشت', 'خوروین', 'علاقبند', 'علاقه بند', 'ولیان', 'هرجاب', 'جلنگدار', 'آغشت', 'برغان', 'دوزعنبر']
                 if (cities.filter(city => contents.indexOf(city) !== -1).length > 0) {
                     const result = await query_es(listing);
                     if (result.length === 0) {
