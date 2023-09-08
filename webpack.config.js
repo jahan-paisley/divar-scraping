@@ -19,4 +19,7 @@ module.exports = {
         filename: 'divar.ir.js',
         path: path.resolve(__dirname, '.'),
     },
+    experiments: {
+        topLevelAwait: true
+    }
 };

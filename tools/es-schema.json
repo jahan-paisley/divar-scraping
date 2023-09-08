@@ -1,0 +1,109 @@
+{
+  "listing": {
+    "mappings": {
+      "properties": {
+        "accuracy": {
+          "type": "long"
+        },
+        "advertiser": {
+          "type": "text",
+          "fields": {
+            "keyword": {
+              "type": "keyword",
+              "ignore_above": 256
+            }
+          }
+        },
+        "area": {
+          "type": "long"
+        },
+        "built_at": {
+          "type": "long"
+        },
+        "category": {
+          "type": "text",
+          "fields": {
+            "keyword": {
+              "type": "keyword",
+              "ignore_above": 256
+            }
+          }
+        },
+        "created": {
+          "type": "date"
+        },
+        "desc": {
+          "type": "text",
+          "fields": {
+            "keyword": {
+              "type": "keyword",
+              "ignore_above": 256
+            }
+          }
+        },
+        "district": {
+          "type": "text",
+          "fields": {
+            "keyword": {
+              "type": "keyword",
+              "ignore_above": 256
+            }
+          }
+        },
+        "ext_id": {
+          "type": "text",
+          "fields": {
+            "keyword": {
+              "type": "keyword",
+              "ignore_above": 1
+            }
+          }
+        },
+        "id": {
+          "type": "long"
+        },
+        "land_area": {
+          "type": "long"
+        },
+        "location": {
+          "type": "geo_point"
+        },
+        "mobile": {
+          "type": "long"
+        },
+        "notes": {
+          "type": "text",
+          "fields": {
+            "keyword": {
+              "type": "keyword"
+            }
+          }
+        },
+        "price": {
+          "type": "long"
+        },
+        "price_meter": {
+          "type": "long"
+        },
+        "revision": {
+          "type": "boolean"
+        },
+        "rooms": {
+          "type": "long"
+        },
+        "title": {
+          "type": "text",
+          "fields": {
+            "keyword": {
+              "type": "keyword",
+              "ignore_above": 256
+            }
+          }
+        },
+        "watch": {
+          "type": "boolean"
+        }
+      }
+    }
+  }
+}

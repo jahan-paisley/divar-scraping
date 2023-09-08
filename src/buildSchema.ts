@@ -28,6 +28,16 @@ export interface ListingInterface {
     created?: Date;
 }
 
+export class IdPrice {
+    public constructor(ext_id: string, price: number) {
+        this.ext_id = ext_id;
+        this.price = price;
+    }
+
+    public ext_id: string;
+    public price: number;
+}
+
 export class Listing implements ListingInterface {
     public constructor(init?: Partial<Listing>) {
         Object.assign(this, init);
@@ -38,6 +48,7 @@ export class Listing implements ListingInterface {
     public title?: string;
     public desc?: string;
     public advertiser?: string;
+    public agent?: string;
     public area?: number;
     public land_area?: number;
     public rooms?: number;
