@@ -1,6 +1,6 @@
-import {IdPrice} from "./buildSchema";
+import {IdPrice} from "./model";
 
-const {insertRecord, Listing, GeolocationCoord, buildSchema} = require('./buildSchema');
+const {Listing, GeolocationCoord} = require('./model');
 
 console.clear();
 
@@ -83,6 +83,7 @@ const allIdPrices: IdPrice[] = await get_all_es();
 const callback = async function () {
     const contactBtn: HTMLElement | null = document.querySelector("#app > div.kt-container > div button");
     let searchEl = document.querySelector('div.kt-nav-text-field__field > form > input') as HTMLInputElement;
+/*
     if (searchEl!!.value!! != 'کردان')
         document.querySelectorAll('article[class^=kt-post-card]').forEach(elem => {
                 let content = elem.textContent;
@@ -99,6 +100,7 @@ const callback = async function () {
                     elem.remove();
             }
         )
+*/
 
     const excludedDistricts = [
         'سهیلیه', 'سهلیه', 'سهیله',
@@ -118,7 +120,10 @@ const callback = async function () {
         'حاجی آباد', 'حاجی‌آباد', 'حاجی اباد', 'حاجی‌اباد',
         'قاسم اباد', 'قاسم آباد', 'قاسم‌اباد', 'قاسم‌آباد',
         'گلسار', 'سیف آباد',
-
+        'نمکلان',
+        'آران',
+        'اران',
+        'تهراندست',
         'هلجرد'
     ]
     document.querySelectorAll('article[class^=kt-post-card]').forEach(elem => {
@@ -138,10 +143,14 @@ const callback = async function () {
                     const items = allIdPrices.filter(l => l.ext_id === extId);
                     if (items.length > 0) {
                         if (items.find(o => o.price === newPrice))
-                            (elem as HTMLElement).style.backgroundColor = 'green';
-                        else
-                            (elem as HTMLElement).style.backgroundColor = 'red';
+                            (elem as HTMLElement).style.backgroundColor = 'lightskyblue';
+                        else if (items.find(o => o.price < newPrice))
+                            (elem as HTMLElement).style.backgroundColor = 'crimson';
+                        else if (items.find(o => o.price > newPrice))
+                            (elem as HTMLElement).style.backgroundColor = 'limegreen';
                     }
+                    else
+                        (elem as HTMLElement).style.backgroundColor = 'gold';
                 }
             }
         }
@@ -171,7 +180,8 @@ const callback = async function () {
     const result = await query_es(listing);
     if (result.length !== 0 && result.filter(o => equals(listing, o._source)).length > 0) {
         setTimeout(() => {
-            history.back()
+            //history.back()
+            console.log("going back");
         }, 500);
     }
 
@@ -194,8 +204,9 @@ const callback = async function () {
                 found = true;
                 document.getElementsByClassName('kt-statement--info')[0].remove();
                 clearInterval(interval);
-                listing.mobile = parseInt(mobileStr)
-                console.log(listing)
+                listing.mobile = parseInt(mobileStr);
+                console.log(listing.mobile);
+                console.log(listing);
                 const contents = JSON.stringify(listing);
                 const cities = ['کردان', 'کوهسار', 'طالیان', 'تالیان', 'ورده', 'خور',
                     'اغشت', 'خوروین', 'علاقبند', 'علاقه بند', 'ولیان', 'هرجاب',

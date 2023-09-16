@@ -1,5 +1,5 @@
 import {Client} from 'elasticsearch-browser';
-import {ListingInterface} from './buildSchema';
+import {ListingInterface} from './model';
 
 const client = new Client({
     node: 'http://localhost:9200',
