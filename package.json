@@ -3,7 +3,9 @@
   "version": "1.0.0",
   "dependencies": {
     "@elastic/elasticsearch": "^8.6.0",
-    "elasticsearch-browser": "^16.7.1"
+    "elasticsearch-browser": "^16.7.1",
+    "squirrelly": "^9.0.0",
+    "truecallerjs": "^2.2.0"
   },
   "devDependencies": {
     "@babel/preset-typescript": "^7.18.6",

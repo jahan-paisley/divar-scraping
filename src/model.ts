@@ -25,6 +25,7 @@ export interface ListingInterface {
     category?: string;
     mobile?: number;
     built_at?: number;
+    watch?: boolean;
     created?: Date;
 }
 
@@ -61,5 +62,6 @@ export class Listing implements ListingInterface {
     public location?: GeolocationCoord;
     public accuracy?: number;
     public revision?: boolean;
+    public watch?: boolean;
     public created?: Date;
 }
